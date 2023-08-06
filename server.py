@@ -35,6 +35,18 @@ scoreboard = [
     },
 ]
 
+def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x["score"] > pivot["score"]]
+    middle = [x for x in arr if x["score"] == pivot["score"]]
+    right = [x for x in arr if x["score"] < pivot["score"]]
+
+    return quicksort(left) + middle + quicksort(right)
+
+
 
 @app.route('/')
 def show_scoreboard():
@@ -51,12 +63,12 @@ def increase_score():
         if team["id"] == team_id:
             team["score"] += 1
 
+    scoreboard = quicksort(scoreboard)
     return jsonify(scoreboard=scoreboard)
 
 
 if __name__ == '__main__':
    app.run(debug = True)
-
 
 
 
